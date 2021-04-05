@@ -93,7 +93,6 @@ setTimeout(function(){
             displayTabRow();
             //choisir les places
             let tabResa = chosenSeats(nbSeats);
-            console.table(tabResa);
 
             if(tabResa.length == nbSeats){
                 for(let i = 0; i < tabRow[myRow].length; i++){
@@ -134,4 +133,3 @@ setTimeout(function(){
 //--------------
 
     
-
