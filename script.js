@@ -42,11 +42,11 @@ function displayTabRow(){
     }
 }
 /* choix du rang ou du nombre de places */
-function chooseItem(str, num, err){
+function chooseItem(str, num, num2, err){
     let bool = false;
     while(bool == false){
         let data = prompt(str);
-        if( pattern.test(data) && data < num ){
+        if( pattern.test(data) && data < num && data > num2){
             bool = true;
         }else{
             alert('Saisie incorrecte : '+err);
@@ -101,9 +101,13 @@ function chosenSeats(nbSeats){
 //----------------------------
 setTimeout(function(){
     while(resaOk != true){
-        let myRow = chooseItem('choisir une rangée (ex : 0)', 8, 'un chiffre de 0 à 7 est attendu');
-        let nbSeats = chooseItem('choisir le nombre de sièges (ex : 2)', 9, 'un chiffre de 0 à 8 est attendu');
-    
+        let nbSeats = chooseItem('Choisir le nombre de places à réserver (ex : 2)', 9, 0, 'un chiffre de 1 à 9 est attendu');
+        console.log('Nb places : '+nbSeats);
+        $('#nb-seats').append(nbSeats);
+        let myRow = chooseItem('Choisir une rangée (ex : 0)', 8, -1, 'un chiffre de 0 à 7 est attendu');
+        console.log('rangée : '+myRow);
+        $('#num-row').append(myRow);
+
         if( nbSeats <= checkNbEmpty(myRow) ){
             console.log('Nb places OK : '+nbSeats+'/'+checkNbEmpty(myRow)+' dispo');
             console.table(tabRow);
