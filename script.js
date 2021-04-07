@@ -16,6 +16,8 @@ let tabTaken = [
     tabRow[2][6] = 'OCCUPE',
     tabRow[2][8] = 'OCCUPE'
 ];
+/* Vérifie que les saisies dans les prompt() sont bien des chiffres */
+let pattern = new RegExp("[0-9]");
 /* bool si réservation effectuée */
 let resaOk;
 
@@ -39,18 +41,34 @@ function displayTabRow(){
         $('#layout').append('<br>');
     }
 }
-/* choix du rang */
-function chooseRow(){
-    let row = prompt('choisir une rangée (ex : 0)');
-    console.log('rangée : '+row);
-    return row;
+/* choix du rang ou du nombre de places */
+function chooseItem(str, num, err){
+    let bool = false;
+    while(bool == false){
+        let data = prompt(str);
+        if( pattern.test(data) && data < num ){
+            bool = true;
+        }else{
+            alert('Saisie incorrecte : '+err);
+        }
+        
+        if(bool == true){
+            return data;
+        }
+    }
 }
-/* choix nb places */
-function chooseNbSeats(){
-    let seats = prompt('choisir le nombre de sièges (ex : 2)');
-    console.log('Nb places : '+seats);
-    return seats;
-}
+// /* choix du rang */
+// function chooseRow(){
+//     let row = prompt('choisir une rangée (ex : 0)');
+//     console.log('rangée : '+row);
+//     return row;
+// }
+// /* choix nb places */
+// function chooseNbSeats(){
+//     let seats = prompt('choisir le nombre de sièges (ex : 2)');
+//     console.log('Nb places : '+seats);
+//     return seats;
+// }
 /* check rang et nb places */
 function checkNbEmpty(myRow){
     let num = 0;
@@ -67,11 +85,10 @@ function chosenSeats(nbSeats){
     while(bool == false){
         let seats = prompt('choisir les '+nbSeats+' places (ex : 4 5 6)');
         seats.split(' ').forEach(function(item){
-            let pattern = new RegExp("[0-9]");
-            if( pattern.test(item) ){
-                return bool = true;
+            if( pattern.test(item) && item < 9 ){
+                bool = true;
             }else{
-                alert('Saisie incorrecte des sièges : des chiffres sont attendus');
+                alert('Saisie incorrecte : des chiffres sont attendus');
             }
         });
         
@@ -84,14 +101,14 @@ function chosenSeats(nbSeats){
 //----------------------------
 setTimeout(function(){
     while(resaOk != true){
-        let myRow = chooseRow();
-        let nbSeats = chooseNbSeats();
+        let myRow = chooseItem('choisir une rangée (ex : 0)', 8, 'un chiffre de 0 à 7 est attendu');
+        let nbSeats = chooseItem('choisir le nombre de sièges (ex : 2)', 9, 'un chiffre de 0 à 8 est attendu');
     
         if( nbSeats <= checkNbEmpty(myRow) ){
             console.log('Nb places OK : '+nbSeats+'/'+checkNbEmpty(myRow)+' dispo');
             console.table(tabRow);
             displayTabRow();
-            //choisir les places
+            
             let tabResa = chosenSeats(nbSeats);
 
             if(tabResa.length == nbSeats){
